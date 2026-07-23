@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano-Mind | The End-to-End LLM System</title>
+    <style>
+        /* Cartoonish / Comic Style Variables */
+        :root {
+            --cream: #FFFDD0;
+            --green: #90EE90;
+            --green-dark: #3CB371;
+            --black: #111;
+            --border-width: 4px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+            background-color: var(--cream);
+            color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Container for comic panels */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Comic Panel Card */
+        .panel {
+            background-color: #fff;
+            border: var(--border-width) solid var(--black);
+            border-radius: 16px;
+            box-shadow: 12px 12px 0 var(--black);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .panel:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 16px 16px 0 var(--black);
+        }
+        
+        .panel.green-bg {
+            background-color: var(--green);
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0 #fff, 5px 5px 0 var(--black);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            text-align: center;
+            color: var(--green);
+            margin-top: 2rem;
+            transform: rotate(-3deg);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--green-dark);
+            text-shadow: 2px 2px 0 #fff, 4px 4px 0 var(--black);
+        }
+
+        p {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Links / Buttons */
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0 4rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--black);
+            background-color: var(--green);
+            text-decoration: none;
+            border: var(--border-width) solid var(--black);
+            border-radius: 50px;
+            box-shadow: 8px 8px 0 var(--black);
+            transition: all 0.1s;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #7BE07B;
+            transform: translate(2px, 2px);
+            box-shadow: 6px 6px 0 var(--black);
+        }
+
+        .btn:active {
+            transform: translate(8px, 8px);
+            box-shadow: 0px 0px 0 var(--black);
+        }
+
+        /* Football Arrow Area */
+        .football-section {
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+            padding-top: 20px;
+        }
+
+        .football {
+            font-size: 5rem;
+            display: inline-block;
+            animation: bounceAndSpin 2s infinite;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        @keyframes bounceAndSpin {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+
+        /* Speech Bubble */
+        .speech-bubble {
+            position: relative;
+            background: #fff;
+            border: var(--border-width) solid var(--black);
+            border-radius: 30px;
+            padding: 20px;
+            width: 320px;
+            margin: 0 auto 20px auto;
+            text-align: center;
+            box-shadow: 8px 8px 0 var(--black);
+            font-size: 1.2rem;
+            font-weight: bold;
+            transform: rotate(3deg);
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 20px 20px 0;
+            border-style: solid;
+            border-color: #fff transparent transparent transparent;
+            z-index: 2;
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -26px;
+            left: 50%;
+            margin-left: -13px;
+            border-width: 23px 23px 0;
+            border-style: solid;
+            border-color: var(--black) transparent transparent transparent;
+            z-index: 1;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .features { grid-template-columns: 1fr; }
+        }
+
+        /* Video Section */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            border: var(--border-width) solid var(--black);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 12px 12px 0 var(--black);
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+        
+        .sticker {
+            position: absolute;
+            background: #FFD700;
+            border: 3px solid var(--black);
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transform: rotate(-15deg);
+            box-shadow: 4px 4px 0 var(--black);
+            top: -20px;
+            right: -20px;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Hero Title -->
+        <h1>Nano-Mind!</h1>
+        
+        <div class="panel">
+            <h2>What is Nano-Mind?</h2>
+            <p>Nano-Mind is a custom Artificial Intelligence (like a mini ChatGPT) built completely from scratch!</p>
+            <p>Instead of needing massive, expensive supercomputers, this AI is designed to be super efficient. In fact, the live demo is running smoothly on a basic computer server with just <strong>16 GB of RAM and 2 vCPUs</strong>!</p>
+            <p>It proves that you don't need giant tech-company resources or heavy graphics cards to build and run real AI.</p>
+        </div>
+
+        <!-- Links moved to the middle, removed emojis -->
+        <div class="cta-container">
+            <a href="https://huggingface.co/spaces/NOT-OMEGA/NanoMind" target="_blank" class="btn">Launch Live Demo</a>
+            <a href="https://github.com/sumeet1212khatri/Nano-Mind" target="_blank" class="btn">View Source Code</a>
+        </div>
+
+        <!-- Video Demo Panel -->
+        <div class="panel">
+            <h2>See It In Action!</h2>
+            <p>Watch the full walkthrough of how Nano-Mind works!</p>
+
+            <!-- Thumbnail version (works everywhere, including local files) -->
+            <a id="video-thumb" href="https://youtu.be/OBEMQljAUis" target="_blank" style="
+                display: block;
+                position: relative;
+                border-radius: 12px;
+                overflow: hidden;
+                border: var(--border-width) solid var(--black);
+                box-shadow: 12px 12px 0 var(--black);
+                cursor: pointer;
+                text-decoration: none;
+                transition: transform 0.2s;
+            ">
+                <img src="https://img.youtube.com/vi/OBEMQljAUis/maxresdefault.jpg" alt="Nano-Mind Demo Video" style="width: 100%; display: block;">
+                <!-- Play button -->
+                <div style="
+                    position: absolute;
+                    top: 50%; left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 90px; height: 90px;
+                    background: var(--green);
+                    border: 5px solid var(--black);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 6px 6px 0 var(--black);
+                ">
+                    <div style="
+                        width: 0; height: 0;
+                        border-top: 20px solid transparent;
+                        border-bottom: 20px solid transparent;
+                        border-left: 35px solid var(--black);
+                        margin-left: 6px;
+                    "></div>
+                </div>
+                <div style="
+                    position: absolute;
+                    bottom: 12px; right: 12px;
+                    background: var(--green);
+                    border: 3px solid var(--black);
+                    padding: 6px 14px;
+                    font-weight: bold;
+                    font-size: 1rem;
+                    border-radius: 50px;
+                    box-shadow: 4px 4px 0 var(--black);
+                    font-family: inherit;
+                ">Click to Watch!</div>
+            </a>
+
+            <!-- Embedded version (auto-replaces thumbnail when hosted on a real domain) -->
+            <div id="video-embed" class="video-wrapper" style="display: none;">
+                <iframe data-src="https://www.youtube.com/embed/OBEMQljAUis" title="Nano-Mind Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <script>
+                if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+                    document.getElementById('video-thumb').style.display = 'none';
+                    var embedDiv = document.getElementById('video-embed');
+                    embedDiv.style.display = 'block';
+                    var iframe = embedDiv.querySelector('iframe');
+                    iframe.src = iframe.getAttribute('data-src');
+                }
+            </script>
+        </div>
+
+        <!-- System Architecture Diagram - Swipeable Carousel -->
+        <div class="panel">
+            <h2>System Architecture</h2>
+            <p>Here's the full blueprint of how all the pieces of Nano-Mind connect together. Swipe or use the arrows to see both diagrams!</p>
+
+            <div class="carousel-container" style="position: relative; margin-top: 1rem;">
+                <!-- Slides -->
+                <div class="carousel-track" id="carouselTrack" style="
+                    position: relative;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    border: var(--border-width) solid var(--black);
+                    box-shadow: 12px 12px 0 var(--black);
+                    perspective: 1000px;
+                ">
+                    <!-- Slide 1: Overview Diagram -->
+                    <div class="carousel-slide active" id="slide-0" style="width: 100%; transition: all 0.6s ease;">
+                        <a href="https://app.eraser.io/workspace/RMsX2vhTVpB6uaZgnBqV?origin=share" target="_blank" style="display: block; text-decoration: none;">
+                            <img src="https://github.com/user-attachments/assets/396dac9c-4256-48d7-808b-8fc4718df27a" alt="Nano-Mind Overview Diagram" style="width: 100%; display: block;">
+                        </a>
+                    </div>
+                    <!-- Slide 2: Detailed Architecture (link to Eraser.io) -->
+                    <div class="carousel-slide" id="slide-1" style="width: 100%; display: none; transition: all 0.6s ease;">
+                        <a href="https://app.eraser.io/workspace/RMsX2vhTVpB6uaZgnBqV?origin=share" target="_blank" style="
+                            display: block; text-decoration: none; color: #fff;
+                            background: #111; padding: 3rem 2rem; text-align: center;
+                            min-height: 350px;
+                        ">
+                            <!-- Text-based preview of the detailed architecture -->
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--green); margin-bottom: 2rem;">Detailed System Architecture</div>
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; font-size: 1.1rem;">
+                                <div style="border: 2px solid #fff; border-radius: 10px; padding: 10px 30px;">Frontend (ChatUI + Benchmarks)</div>
+                                <div style="font-size: 1.5rem;">↓ SSE/Chat</div>
+                                <div style="border: 2px solid #fff; border-radius: 10px; padding: 10px 30px;">FastAPI + SSE (main.py)</div>
+                                <div style="display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                                    <div style="border: 2px solid var(--green); border-radius: 10px; padding: 8px 16px; color: var(--green);">Engine Pool (N=3)</div>
+                                    <div style="border: 2px solid var(--green); border-radius: 10px; padding: 8px 16px; color: var(--green);">Session Manager</div>
+                                    <div style="border: 2px solid var(--green); border-radius: 10px; padding: 8px 16px; color: var(--green);">Latency Tracker</div>
+                                </div>
+                                <div style="font-size: 1.5rem;">↓ STDin/STDout Pipe</div>
+                                <div style="border: 2px solid #fff; border-radius: 10px; padding: 10px 30px;">C++ Engine (inference.cpp)</div>
+                                <div style="font-size: 1.5rem;">↓</div>
+                                <div style="border: 2px solid var(--green); border-radius: 10px; padding: 10px 30px; color: var(--green); font-weight: bold;">KV-Cache (20 Sessions)</div>
+                            </div>
+                            <div style="margin-top: 2rem; background: var(--green); color: #000; display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; font-family: inherit;">Click to open interactive version on Eraser.io</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Left Arrow -->
+                <div onclick="carouselPrev()" style="
+                    position: absolute; top: 50%; left: -20px; transform: translateY(-50%);
+                    width: 50px; height: 50px; background: var(--green); border: var(--border-width) solid var(--black);
+                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                    font-size: 1.8rem; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0 var(--black);
+                    transition: all 0.15s; user-select: none; z-index: 5;
+                " onmousedown="this.style.transform='translateY(-50%) translate(2px,2px)'; this.style.boxShadow='2px 2px 0 var(--black)'"
+                   onmouseup="this.style.transform='translateY(-50%)'; this.style.boxShadow='4px 4px 0 var(--black)'"
+                >◀</div>
+
+                <!-- Right Arrow -->
+                <div onclick="carouselNext()" style="
+                    position: absolute; top: 50%; right: -20px; transform: translateY(-50%);
+                    width: 50px; height: 50px; background: var(--green); border: var(--border-width) solid var(--black);
+                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                    font-size: 1.8rem; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0 var(--black);
+                    transition: all 0.15s; user-select: none; z-index: 5;
+                " onmousedown="this.style.transform='translateY(-50%) translate(2px,2px)'; this.style.boxShadow='2px 2px 0 var(--black)'"
+                   onmouseup="this.style.transform='translateY(-50%)'; this.style.boxShadow='4px 4px 0 var(--black)'"
+                >▶</div>
+            </div>
+
+            <!-- Dots Indicator -->
+            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 1.2rem;">
+                <div class="carousel-dot active-dot" id="dot-0" onclick="carouselGoTo(0)" style="
+                    width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--black);
+                    background: var(--green); cursor: pointer; box-shadow: 3px 3px 0 var(--black); transition: all 0.2s;
+                "></div>
+                <div class="carousel-dot" id="dot-1" onclick="carouselGoTo(1)" style="
+                    width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--black);
+                    background: #fff; cursor: pointer; box-shadow: 3px 3px 0 var(--black); transition: all 0.2s;
+                "></div>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 0.5rem;">
+                <span style="font-size: 1rem; font-weight: bold;" id="slide-label">1 / 2 — Overview Diagram</span>
+            </div>
+
+            <script>
+                (function() {
+                    var currentSlide = 0;
+                    var totalSlides = 2;
+                    var labels = ['1 / 2 — Overview Diagram', '2 / 2 — Interactive Architecture (Eraser.io)'];
+                    var track = document.getElementById('carouselTrack');
+                    var startX = 0;
+
+                    window.carouselNext = function() {
+                        carouselGoTo((currentSlide + 1) % totalSlides);
+                    };
+                    window.carouselPrev = function() {
+                        carouselGoTo((currentSlide - 1 + totalSlides) % totalSlides);
+                    };
+                    window.carouselGoTo = function(index) {
+                        var curr = document.getElementById('slide-' + currentSlide);
+                        curr.style.animation = 'flipOut 0.3s ease forwards';
+                        setTimeout(function() {
+                            curr.style.display = 'none';
+                            curr.style.animation = '';
+                            var next = document.getElementById('slide-' + index);
+                            next.style.display = 'block';
+                            next.style.animation = 'flipIn 0.3s ease forwards';
+                            currentSlide = index;
+                            for (var i = 0; i < totalSlides; i++) {
+                                document.getElementById('dot-' + i).style.background = (i === index) ? 'var(--green)' : '#fff';
+                            }
+                            document.getElementById('slide-label').textContent = labels[index];
+                        }, 300);
+                    };
+
+                    track.addEventListener('touchstart', function(e) {
+                        startX = e.touches[0].clientX;
+                    }, {passive: true});
+                    track.addEventListener('touchend', function(e) {
+                        var diff = startX - e.changedTouches[0].clientX;
+                        if (Math.abs(diff) > 50) {
+                            if (diff > 0) carouselNext();
+                            else carouselPrev();
+                        }
+                    }, {passive: true});
+                })();
+            </script>
+        </div>
+
+        <!-- Football pointing down -->
+        <div class="football-section">
+            <div class="speech-bubble">
+                Hey there! Kick this football down to explore the awesome features of Nano-Mind!
+            </div>
+            <div class="football" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">⚽</div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features" id="features">
+            <div class="panel green-bg">
+                <div class="sticker">WOW!</div>
+                <h2>Built From Scratch</h2>
+                <p>We didn't just copy-paste existing tools. Every part of this AI was custom-coded to work perfectly together.</p>
+            </div>
+            
+            <div class="panel">
+                <h2>Super Fast Code</h2>
+                <p>The core engine is written in C++, a programming language known for raw speed. No bloated software here!</p>
+            </div>
+            
+            <div class="panel">
+                <h2>Highly Efficient</h2>
+                <p>It is optimized to run smoothly on everyday CPUs instead of requiring expensive graphics cards (GPUs).</p>
+            </div>
+            
+            <div class="panel green-bg">
+                <h2>Smart Memory</h2>
+                <p>It remembers your conversation history instantly, making follow-up questions over 2x faster to answer!</p>
+            </div>
+        </div>
+
+        <!-- Performance Stats Section -->
+        <div class="panel green-bg" style="text-align: center;">
+            <h2>The Numbers Don't Lie!</h2>
+            <p>Here's how Nano-Mind performs on a tiny server:</p>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                <div style="background: #fff; border: var(--border-width) solid var(--black); border-radius: 16px; padding: 1.5rem 2rem; box-shadow: 8px 8px 0 var(--black); min-width: 180px;">
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--green-dark);">33</div>
+                    <div style="font-size: 1.1rem;">Tokens Per Second</div>
+                </div>
+                <div style="background: #fff; border: var(--border-width) solid var(--black); border-radius: 16px; padding: 1.5rem 2rem; box-shadow: 8px 8px 0 var(--black); min-width: 180px;">
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--green-dark);">410ms</div>
+                    <div style="font-size: 1.1rem;">Response Time (Warm)</div>
+                </div>
+                <div style="background: #fff; border: var(--border-width) solid var(--black); border-radius: 16px; padding: 1.5rem 2rem; box-shadow: 8px 8px 0 var(--black); min-width: 180px;">
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--green-dark);">2.47x</div>
+                    <div style="font-size: 1.1rem;">Cache Speedup</div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- How It Works - Comic Strip Style -->
+        <div class="panel">
+            <h2>How It Works (Step by Step!)</h2>
+            <p>Think of it like a conveyor belt in a factory:</p>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
+
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="background: var(--green); border: var(--border-width) solid var(--black); border-radius: 50%; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: 6px 6px 0 var(--black);">1</div>
+                    <div>
+                        <strong style="font-size: 1.4rem;">You Type a Question</strong>
+                        <p style="margin-bottom: 0;">You ask something like "What is gravity?" in the chat box.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; font-size: 3rem; color: var(--green-dark); animation: bounceArrow 1s infinite;">⬇</div>
+
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="background: var(--green); border: var(--border-width) solid var(--black); border-radius: 50%; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: 6px 6px 0 var(--black);">2</div>
+                    <div>
+                        <strong style="font-size: 1.4rem;">Python Catches It</strong>
+                        <p style="margin-bottom: 0;">Our Python server (like a receptionist) takes your message and passes it along.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; font-size: 3rem; color: var(--green-dark); animation: bounceArrow 1s infinite 0.2s;">⬇</div>
+
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="background: var(--green); border: var(--border-width) solid var(--black); border-radius: 50%; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: 6px 6px 0 var(--black);">3</div>
+                    <div>
+                        <strong style="font-size: 1.4rem;">C++ Engine Does the Thinking</strong>
+                        <p style="margin-bottom: 0;">The super-fast C++ brain crunches the numbers and generates the answer word by word!</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; font-size: 3rem; color: var(--green-dark); animation: bounceArrow 1s infinite 0.4s;">⬇</div>
+
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="background: var(--green); border: var(--border-width) solid var(--black); border-radius: 50%; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: 6px 6px 0 var(--black);">4</div>
+                    <div>
+                        <strong style="font-size: 1.4rem;">You See the Answer Streaming!</strong>
+                        <p style="margin-bottom: 0;">The answer flows back to you in real-time, just like ChatGPT does!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tech Stack Section -->
+        <div class="panel">
+            <h2>What's Under the Hood?</h2>
+            <p>The tools and tech that power Nano-Mind:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; justify-content: center;">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">C++ 17</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">PyTorch</span>
+                <span class="tech-badge">Docker</span>
+                <span class="tech-badge">Hugging Face</span>
+                <span class="tech-badge">AVX2 SIMD</span>
+                <span class="tech-badge">OpenMP</span>
+            </div>
+        </div>
+
+        <!-- Fun Footer -->
+        <div style="text-align: center; margin: 3rem 0 2rem 0;">
+            <div style="font-size: 4rem; animation: bounceAndSpin 3s infinite;">🧠</div>
+            <p style="font-size: 1.5rem; font-weight: bold; margin-top: 1rem;">Built with love, caffeine, and a LOT of C++ debugging.</p>
+            <p style="font-size: 1.1rem; color: #555;">Released under the MIT License. Made by Sumeet.</p>
+            <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <a href="https://huggingface.co/spaces/NOT-OMEGA/NanoMind" target="_blank" class="btn" style="font-size: 1.1rem; padding: 0.8rem 1.5rem;">Try it Now!</a>
+                <a href="https://github.com/sumeet1212khatri/Nano-Mind" target="_blank" class="btn" style="font-size: 1.1rem; padding: 0.8rem 1.5rem;">Star on GitHub</a>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        .tech-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #fff;
+            border: var(--border-width) solid var(--black);
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 6px 6px 0 var(--black);
+            transition: all 0.15s;
+            cursor: default;
+        }
+        .tech-badge:hover {
+            background: var(--green);
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0 var(--black);
+        }
+        @keyframes bounceArrow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        @keyframes flipOut {
+            0% { opacity: 1; transform: rotateY(0deg); }
+            100% { opacity: 0; transform: rotateY(90deg); }
+        }
+        @keyframes flipIn {
+            0% { opacity: 0; transform: rotateY(-90deg); }
+            100% { opacity: 1; transform: rotateY(0deg); }
+        }
+    </style>
+
+</body>
+</html>
