@@ -1127,59 +1127,66 @@
             };
         })();
 
-        // Rabbit Animation Sequence
-        setTimeout(function () {
+        // Interactive Rabbit Logic
+        (function () {
             var container = document.getElementById('rabbit-container');
             var bubble = document.getElementById('rabbit-bubble');
             var rabbit = document.getElementById('rabbit');
 
-            // 1. Hop in from left
-            rabbit.style.animation = 'hopRight 0.5s infinite';
-            container.style.left = '20px';
+            var quotes = [
+                "What's up, doc?",
+                "I'm late, I'm late!",
+                "Nano-Mind is blazing fast!",
+                "Catch me if you can!",
+                "Do you have any carrots?",
+                "Hop hop hop!"
+            ];
 
-            setTimeout(function () {
-                // Stop hopping and Say Hii!
-                rabbit.style.animation = 'none';
-                rabbit.style.transform = 'scaleX(-1)';
+            var isPaused = false;
+            var position = -200;
+            var speed = 3;
+
+            function animate() {
+                if (!isPaused) {
+                    position += speed;
+                    if (position > window.innerWidth + 200) {
+                        position = -300; // Reset to offscreen left
+                    }
+                    container.style.left = position + 'px';
+                }
+                requestAnimationFrame(animate);
+            }
+
+            // Initial setup
+            container.style.transition = 'none'; // Override CSS transition for smooth JS movement
+            container.style.cursor = 'pointer';
+            rabbit.style.animation = 'hopRight 0.3s infinite';
+
+            // Start animation loop
+            animate();
+
+            // Click interaction
+            container.addEventListener('click', function () {
+                if (isPaused) return; // Ignore if already paused
+
+                isPaused = true;
+                rabbit.style.animation = 'none'; // Stop hopping
+                rabbit.style.transform = 'scaleX(1)'; // Turn to face the user
+
+                // Show random quote
+                bubble.textContent = quotes[Math.floor(Math.random() * quotes.length)];
                 bubble.style.opacity = '1';
 
                 setTimeout(function () {
-                    // Hide bubble
                     bubble.style.opacity = '0';
-
                     setTimeout(function () {
-                        // 2. Hop rapidly across screen to right
-                        rabbit.style.animation = 'hopRight 0.25s infinite';
-                        container.style.transition = 'left 3s linear';
-                        container.style.left = '100vw';
-
-                        setTimeout(function () {
-                            // 3. Turn around, peek, and hop
-                            rabbit.style.animation = 'hopLeft 0.5s infinite';
-                            bubble.textContent = 'Good buy!';
-                            container.style.transition = 'left 0.5s ease-out';
-                            container.style.left = 'calc(100vw - 150px)'; // Peek out from right
-
-                            setTimeout(function () {
-                                // Stop hopping, Say Goodbye!
-                                rabbit.style.animation = 'none';
-                                rabbit.style.transform = 'scaleX(1)';
-                                bubble.style.opacity = '1';
-
-                                setTimeout(function () {
-                                    // Hide bubble and hop away
-                                    bubble.style.opacity = '0';
-                                    rabbit.style.animation = 'hopLeft 0.3s infinite';
-                                    setTimeout(function () {
-                                        container.style.left = '100vw';
-                                    }, 300);
-                                }, 2000);
-                            }, 500);
-                        }, 3000); // Wait for run to finish
+                        rabbit.style.animation = 'hopRight 0.3s infinite';
+                        rabbit.style.transform = 'scaleX(-1)'; // Face right again
+                        isPaused = false;
                     }, 300);
-                }, 2000); // Say Hii for 2 seconds
-            }, 1000); // Wait 1 sec after hopping in
-        }, 2000); // Start 2 seconds after page load
+                }, 2000);
+            });
+        })();
     </script>
 </body>
 
